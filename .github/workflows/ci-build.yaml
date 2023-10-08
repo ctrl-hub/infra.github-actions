@@ -24,14 +24,14 @@ jobs:
         run: |
           echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: Login to the Registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           registry: europe-west2-docker.pkg.dev
           username: _json_key
           password: ${{ secrets.REGISTRY_AUTH }}
       - name: Build and Push image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5
         with:
-          tags: /ctrl-hub-registry/${{ inputs.image }}:${{ env.RELEASE_VERSION }},/ctrl-hub-registry/${{ inputs.image }}:latest
+          tags: ctrl-hub-registry/${{ inputs.image }}:${{ env.RELEASE_VERSION }},ctrl-hub-registry/${{ inputs.image }}:latest
           file: ${{ inputs.file }}
           push: true
