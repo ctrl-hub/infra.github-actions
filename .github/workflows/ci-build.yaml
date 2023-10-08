@@ -20,6 +20,9 @@ jobs:
     name: Image
     runs-on: ubuntu-latest
     steps:
+      - name: Extract tag as an ENV var
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: Login to the Registry
         uses: docker/login-action@v1
         with:
@@ -29,6 +32,6 @@ jobs:
       - name: Build and Push image
         uses: docker/build-push-action@v2
         with:
-          tags: /ctrl-hub-registry/${{ inputs.image }}:${{ inputs.ref }},/ctrl-hub-registry/${{ inputs.image }}:latest
+          tags: /ctrl-hub-registry/${{ inputs.image }}:${{ env.RELEASE_VERSION }},/ctrl-hub-registry/${{ inputs.image }}:latest
           file: ${{ inputs.file }}
           push: true
