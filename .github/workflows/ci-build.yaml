@@ -32,6 +32,6 @@ jobs:
       - name: Build and Push image
         uses: docker/build-push-action@v5
         with:
-          tags: ctrl-hub-registry/${{ inputs.image }}:${{ env.RELEASE_VERSION }},ctrl-hub-registry/${{ inputs.image }}:latest
+          tags: ctrl-hub-registry/registry/${{ inputs.image }}:${{ env.RELEASE_VERSION }},ctrl-hub-registry/registry/${{ inputs.image }}:latest
           file: ${{ inputs.file }}
           push: true
