@@ -29,9 +29,9 @@ jobs:
               workflow_id: 'cd.yaml',
               ref: 'main',
               inputs: {
-                name: '${{ inputs.name }}'',
-                ref: '${{ github.ref }}'',
-                sha: '${{ github.sha }}'',
+                name: '${{ inputs.name }}',
+                ref: '${{ github.ref }}',
+                sha: '${{ github.sha }}',
                 tag: '${{ env.RELEASE_VERSION }}',
               },
             })
