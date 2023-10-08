@@ -1,0 +1,34 @@
+on:
+  workflow_call:
+    inputs:
+      image:
+        required: true
+        type: string
+      ref:
+        required: true
+        type: string
+      file:
+        required: false
+        type: string
+        default: "Dockerfile"
+    secrets:
+      REGISTRY_AUTH:
+        required: true
+
+jobs:
+  build_image:
+    name: Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to the Registry
+        uses: docker/login-action@v1
+        with:
+          registry: europe-west2-docker.pkg.dev
+          username: _json_key
+          password: ${{ secrets.REGISTRY_AUTH }}
+      - name: Build and Push image
+        uses: docker/build-push-action@v2
+        with:
+          tags: /ctrl-hub-registry/${{ inputs.image }}:${{ inputs.ref }},/ctrl-hub-registry/${{ inputs.image }}:latest
+          file: ${{ inputs.file }}
+          push: true
