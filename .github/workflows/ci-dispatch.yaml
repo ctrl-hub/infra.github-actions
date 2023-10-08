@@ -26,7 +26,7 @@ jobs:
             github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
               repo: 'k8s',
-              workflow_id: '.github/workflows/cd.yaml',
+              workflow_id: '71970969',
               ref: 'main',
               inputs: {
                 name: '${{ inputs.name }}',
