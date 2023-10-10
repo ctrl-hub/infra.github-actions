@@ -1,7 +1,13 @@
 on:
   workflow_call:
     inputs:
-      name:
+      owner:
+        required: true
+        type: string
+      project:
+        required: true
+        type: string
+      image:
         required: true
         type: string
     secrets:
@@ -28,10 +34,12 @@ jobs:
             github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
               repo: 'k8s',
-              workflow_id: '71970969',
+              workflow_id: '.github/workflows/cd.yaml',
               ref: 'main',
               inputs: {
-                name: '${{ inputs.name }}',
+                owner: '${{ inputs.owner }}',
+                project: '${{ inputs.project }}',
+                image: '${{ inputs.image }}',
                 ref: '${{ github.ref }}',
                 sha: '${{ github.sha }}',
                 tag: '${{ env.RELEASE_VERSION }}',
