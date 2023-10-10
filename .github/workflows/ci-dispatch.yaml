@@ -5,7 +5,7 @@ on:
         required: true
         type: string
     secrets:
-      ACCESS_TOKEN:
+      DISPATCH_PAT:
         required: true
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
       - name: Trigger Workflow
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.ACCESS_TOKEN }}
+          github-token: ${{ secrets.DISPATCH_PAT }}
           script: |
             github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
