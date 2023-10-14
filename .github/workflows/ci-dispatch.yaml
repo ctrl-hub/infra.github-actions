@@ -10,6 +10,12 @@ on:
       image:
         required: true
         type: string
+      author:
+        required: true
+        type: string
+      source:
+        required: true
+        type: string
     secrets:
       DISPATCH_PAT:
         required: true
@@ -37,6 +43,8 @@ jobs:
               workflow_id: '.github/workflows/cd.yaml',
               ref: 'main',
               inputs: {
+                author: '${{ inputs.author }}',
+                source: '${{ inputs.source }}',
                 owner: '${{ inputs.owner }}',
                 project: '${{ inputs.project }}',
                 image: '${{ inputs.image }}',
