@@ -42,4 +42,4 @@ jobs:
           file: ${{ inputs.file }}
           push: true
           secret-envs: |
-            COMPOSER_AUTH="{ \"github-oauth\": { \"github.com\": \"${{ secrets.COMPOSER_AUTH_TOKEN }}\"  } }"
+            COMPOSER_AUTH="{ \"github-oauth\": { \"github.com\": ${{ secrets.COMPOSER_AUTH_TOKEN }} } }"
