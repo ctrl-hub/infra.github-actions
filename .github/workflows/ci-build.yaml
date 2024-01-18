@@ -41,5 +41,5 @@ jobs:
             europe-west2-docker.pkg.dev/ctrl-hub-registry/registry/${{ inputs.image }}:latest
           file: ${{ inputs.file }}
           push: true
-          secret-envs: |
-            COMPOSER_AUTH="{ \"github-oauth\": { \"github.com\": ${{ secrets.COMPOSER_AUTH_TOKEN }} } }"
+          secrets: |
+            "composer={ ""github-oauth"": { ""github.com"": ""${{ secrets.COMPOSER_AUTH_TOKEN }}"" } }"
