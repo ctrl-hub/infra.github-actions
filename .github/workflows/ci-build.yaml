@@ -9,8 +9,6 @@ on:
         type: string
         default: "Dockerfile"
     secrets:
-      GCP_REGISTRY_SERVICE_ACCOUNT:
-        required: true
       OP_SERVICE_ACCOUNT_TOKEN:
         required: true
 
@@ -39,6 +37,9 @@ jobs:
       - name: Obtain repo access token
         id: ctrl_hub_bot_repo_access_token 
         run: echo CTRL_HUB_BOT_REPO_ACCESS_TOKEN=$(op read op://ctrl-hub.run/CTRL_HUB_BOT_REPO_ACCESS_TOKEN/password) >> "$GITHUB_OUTPUT"
+      - name: Obtain Google Artifact Registry credentials
+        id: ctrl_hub_google_artifact_registry_credentials
+        run: echo GCP_REGISTRY_SERVICE_ACCOUNT=$(op read op://ctrl-hub.run/GCP_REGISTRY_SERVICE_ACCOUNT/password) >> "$GITHUB_OUTPUT"
       - name: Checkout shared tasks repo
         uses: actions/checkout@v4
         with:
@@ -57,7 +58,7 @@ jobs:
         with:
           registry: europe-west2-docker.pkg.dev
           username: _json_key
-          password: ${{ secrets.GCP_REGISTRY_SERVICE_ACCOUNT }}
+          password: ${{ steps.ctrl_hub_google_artifact_registry_credentials.outputs.GCP_REGISTRY_SERVICE_ACCOUNT }}
       - name: Checkout source repo
         uses: actions/checkout@v4
       - name: Build and Push image
