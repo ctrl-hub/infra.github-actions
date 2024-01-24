@@ -24,6 +24,8 @@ jobs:
   dispatch:
     name: Dispatch event to k8s
     runs-on: ubuntu-latest
+    env:
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }} 
     steps:
 
       - name: Install 1Password CLI
