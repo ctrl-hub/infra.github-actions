@@ -55,7 +55,7 @@ jobs:
           echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
       - name: Trigger Workflow
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           github-token: ${{ steps.ctrl_hub_bot_repo_access_token.outputs.CTRL_HUB_BOT_REPO_ACCESS_TOKEN }}
           script: |
