@@ -62,7 +62,7 @@ jobs:
             github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
               repo: 'k8s',
-              workflow_id: '.github/workflows/ci-dispatch.yaml',
+              workflow_id: '.github/workflows/cd.yaml',
               ref: 'main',
               inputs: {
                 author: '${{ inputs.author }}',
