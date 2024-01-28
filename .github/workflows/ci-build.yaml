@@ -83,4 +83,8 @@ jobs:
           file: ${{ inputs.file }}
           push: true
           secrets: |
-            "composer={ ""github-oauth"": { ""github.com"": ""${{ steps.ctrl_hub_bot_repo_access_token.outputs.CTRL_HUB_BOT_REPO_ACCESS_TOKEN }}"" } }"
+            "composer={ 
+              ""github-oauth"": { 
+                ""github.com"": ""${{ steps.ctrl_hub_bot_repo_access_token.outputs.CTRL_HUB_BOT_REPO_ACCESS_TOKEN }}""
+              }
+            }"
