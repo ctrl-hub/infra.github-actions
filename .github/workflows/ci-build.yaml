@@ -81,6 +81,8 @@ jobs:
             europe-west2-docker.pkg.dev/ctrl-hub-registry/registry/${{ inputs.image }}:${{ env.RELEASE_VERSION }}
             europe-west2-docker.pkg.dev/ctrl-hub-registry/registry/${{ inputs.image }}:latest
           file: ${{ inputs.file }}
+          build-args: |
+            COMPOSER_SECRET_ID=composer
           push: true
           secrets: |
             "composer={ 
