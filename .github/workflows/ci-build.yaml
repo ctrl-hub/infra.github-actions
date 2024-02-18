@@ -24,6 +24,14 @@ jobs:
       BASE_IMAGE_INCLUDE_DIR: "/home/runner/work/infra.base-images"
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
     steps:
+      - name: Create the docker build args
+        id: docker-build-args
+        run: echo "build_args=${{ format('{0}{1}', inputs.args, 'COMPOSER_SECRET_ID=composer') }}" >> $GITHUB_OUTPUT
+
+      - name: DEBUG
+        id: docker-build-args
+        run: echo ${{ steps.docker-build-args.outputs.build_args }}
+
       - name: Install Task
         run: sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
 
@@ -89,10 +97,6 @@ jobs:
 
       - name: Checkout source repo
         uses: actions/checkout@v4
-
-      - name: Create the docker build args
-        id: docker-build-args
-        run: echo "build_args=${{ format('{0}{1}', inputs.args, 'COMPOSER_SECRET_ID=composer') }}" >> $GITHUB_OUTPUT
 
       - name: Build and Push image
         uses: docker/build-push-action@v5
