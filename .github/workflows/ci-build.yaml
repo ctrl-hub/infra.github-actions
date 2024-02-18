@@ -8,6 +8,9 @@ on:
         required: false
         type: string
         default: "Dockerfile"
+      args:
+        required: false
+        type: string
     secrets:
       OP_SERVICE_ACCOUNT_TOKEN:
         required: true
@@ -18,9 +21,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TASK_INCLUDE_DIR: "/home/runner/work/infra.tasks"
-      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }} 
+      BASE_IMAGE_INCLUDE_DIR: "/home/runner/work/infra.base-images"
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
     steps:
-
       - name: Install Task
         run: sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
 
@@ -40,7 +43,7 @@ jobs:
         run: op user get --me
 
       - name: Obtain repo access token
-        id: ctrl_hub_bot_repo_access_token 
+        id: ctrl_hub_bot_repo_access_token
         run: echo CTRL_HUB_BOT_REPO_ACCESS_TOKEN=$(op read op://ctrl-hub.run/CTRL_HUB_BOT_REPO_ACCESS_TOKEN/password) >> "$GITHUB_OUTPUT"
 
       - name: Obtain Google Artifact Registry credentials
@@ -56,6 +59,16 @@ jobs:
 
       - name: Move tasks repo to include path
         run: mv "${GITHUB_WORKSPACE}/infra.tasks" "${TASK_INCLUDE_DIR}"
+
+      - name: Checkout base images repo
+        uses: actions/checkout@v4
+        with:
+          repository: ctrl-hub/infra.base-images
+          path: "infra.base-images"
+          token: ${{ steps.ctrl_hub_bot_repo_access_token.outputs.CTRL_HUB_BOT_REPO_ACCESS_TOKEN }}
+
+      - name: Move base images repo to include path
+        run: mv "${GITHUB_WORKSPACE}/infra.base-images" "${BASE_IMAGE_INCLUDE_DIR}"
 
       - name: Extract tag as an ENV var
         run: |
@@ -77,17 +90,20 @@ jobs:
       - name: Checkout source repo
         uses: actions/checkout@v4
 
+      - name: Create the docker build args
+        id: docker-build-args
+        run: echo ::set-output name=build_args::${{ format('{0}\n{1}', '${{ inputs.args }}', 'COMPOSER_SECRET_ID=composer') }}
+
       - name: Build and Push image
         uses: docker/build-push-action@v5
         with:
           tags: |
             europe-west2-docker.pkg.dev/ctrl-hub-registry/registry/${{ inputs.image }}:${{ env.RELEASE_VERSION }}
             europe-west2-docker.pkg.dev/ctrl-hub-registry/registry/${{ inputs.image }}:latest
-          file: ${{ inputs.file }}
+          file: ${BASE_IMAGE_INCLUDE_DIR}/${{ inputs.file }}
           push: true
           platforms: linux/amd64
-          build-args: |
-            COMPOSER_SECRET_ID=composer
+          build-args: steps.docker-build-args.outputs.build_args
           secrets: |
             "composer={ 
               ""github-oauth"": { 
