@@ -92,7 +92,7 @@ jobs:
 
       - name: Create the docker build args
         id: docker-build-args
-        run: echo ${{ format('{0}\n{1}', inputs.args, 'COMPOSER_SECRET_ID=composer') }}
+        run: echo "${{ format('{0}\n{1}', inputs.args, 'COMPOSER_SECRET_ID=composer') }}"
 
       - name: Build and Push image
         uses: docker/build-push-action@v5
