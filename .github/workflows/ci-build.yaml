@@ -97,7 +97,7 @@ jobs:
           tags: |
             europe-west2-docker.pkg.dev/ctrl-hub-registry/registry/${{ inputs.image }}:${{ env.RELEASE_VERSION }}
             europe-west2-docker.pkg.dev/ctrl-hub-registry/registry/${{ inputs.image }}:latest
-          file: "$BASE_IMAGE_INCLUDE_DIR/${{ inputs.file }}"
+          file: "${{ env.BASE_IMAGE_INCLUDE_DIR }}/${{ inputs.file }}"
           push: true
           platforms: linux/amd64
           build-args: ${{ format('{0}{1}', inputs.args, 'COMPOSER_SECRET_ID=composer') }}
