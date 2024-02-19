@@ -26,10 +26,7 @@ jobs:
     steps:
       - name: Create the docker build args
         id: docker-build-args
-        run: echo "build_args=${{ format('{0}{1}', inputs.args, 'COMPOSER_SECRET_ID=composer') }}" >> $GITHUB_OUTPUT
-
-      - name: DEBUG
-        run: echo ${{ steps.docker-build-args.outputs.build_args }}
+        run: echo "${{ format('{0}{1}', inputs.args, 'COMPOSER_SECRET_ID=composer') }}"
 
       - name: Install Task
         run: sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
