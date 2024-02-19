@@ -24,10 +24,6 @@ jobs:
       BASE_IMAGE_INCLUDE_DIR: "/home/runner/work/infra.base-images"
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
     steps:
-      - name: Create the docker build args
-        id: docker-build-args
-        run: echo "${{ format('{0}{1}', inputs.args, 'COMPOSER_SECRET_ID=composer') }}"
-
       - name: Install Task
         run: sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
 
@@ -103,7 +99,7 @@ jobs:
           file: ${BASE_IMAGE_INCLUDE_DIR}/${{ inputs.file }}
           push: true
           platforms: linux/amd64
-          build-args: steps.docker-build-args.outputs.build_args
+          build-args: ${{ format('{0}{1}', inputs.args, 'COMPOSER_SECRET_ID=composer') }}
           secrets: |
             "composer={ 
               ""github-oauth"": { 
