@@ -103,4 +103,4 @@ jobs:
           build-args: ${{ format('{0}{1}{2}', inputs.args, 'COMPOSER_SECRET_ID=composer', 'GITHUB_TOKEN_ID=github-token') }}
           secrets: |
             "composer={""github-oauth"": {""github.com"": ""${{ steps.ctrl_hub_bot_repo_access_token.outputs.CTRL_HUB_BOT_REPO_ACCESS_TOKEN }}""}}"
-            github-token=${{ steps.ctrl_hub_bot_repo_access_token.outputs.CTRL_HUB_BOT_REPO_ACCESS_TOKEN }}
+            "github-token=${{ steps.ctrl_hub_bot_repo_access_token.outputs.CTRL_HUB_BOT_REPO_ACCESS_TOKEN }}"
