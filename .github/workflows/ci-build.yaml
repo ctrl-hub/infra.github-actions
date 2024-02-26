@@ -100,7 +100,7 @@ jobs:
           file: "${{ env.BASE_IMAGE_INCLUDE_DIR }}/${{ inputs.file }}"
           push: true
           platforms: linux/amd64
-          build-args: ${{ format('{0}{1}{2}', inputs.args, 'COMPOSER_SECRET_ID=composer', 'GITHUB_TOKEN_ID=githubtoken') }}
+          build-args: ${{ format('{0}{1}{2}', inputs.args, 'COMPOSER_SECRET_ID=composer', '\nGITHUB_TOKEN_ID=githubtoken') }}
           secrets: |
             "composer={""github-oauth"": {""github.com"": ""${{ steps.ctrl_hub_bot_repo_access_token.outputs.CTRL_HUB_BOT_REPO_ACCESS_TOKEN }}""}}"
             "githubtoken=${{ steps.ctrl_hub_bot_repo_access_token.outputs.CTRL_HUB_BOT_REPO_ACCESS_TOKEN }}"
