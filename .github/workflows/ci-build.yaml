@@ -107,3 +107,5 @@ jobs:
           secrets: |
             "composer={""github-oauth"": {""github.com"": ""${{ steps.ctrl_hub_bot_repo_access_token.outputs.CTRL_HUB_BOT_REPO_ACCESS_TOKEN }}""}}"
             "githubtoken=${{ steps.ctrl_hub_bot_repo_access_token.outputs.CTRL_HUB_BOT_REPO_ACCESS_TOKEN }}"
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
